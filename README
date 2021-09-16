@@ -1,0 +1,100 @@
+[buero@server complex]$ minikube start
+😄  minikube v1.22.0 on Arch 21.1.2
+🎉  minikube 1.23.0 is available! Download it: https://github.com/kubernetes/minikube/releases/tag/v1.23.0
+💡  To disable this notice, run: 'minikube config set WantUpdateNotification false'
+
+✨  Using the docker driver based on existing profile
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+🔄  Restarting existing docker container for "minikube" ...
+🐳  Preparing Kubernetes v1.21.2 on Docker 20.10.7 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+[buero@server complex]$ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+[buero@server complex]$ kubectl get deployments
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+client-deployment   1/1     1            1           25h
+
+[buero@server complex]$ kubectl delete deployment client-deployment
+deployment.apps "client-deployment" deleted
+
+[buero@server complex]$ kubectl get deployments
+No resources found in default namespace.
+
+[buero@server complex]$ kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+client-node-port   NodePort    10.110.61.209   <none>        3050:31515/TCP   29h
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP          2d
+
+[buero@server complex]$ kubectl delete service client-node-port
+service "client-node-port" deleted
+
+[buero@server complex]$ kubectl get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   2d
+
+[buero@server complex]$ kubectl apply -f k8s 
+service/client-cluster-ip-service created
+deployment.apps/client-deployment created
+
+[buero@server complex]$ kubectl get services
+NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+client-cluster-ip-service   ClusterIP   10.99.147.31   <none>        3000/TCP   11s
+kubernetes                  ClusterIP   10.96.0.1      <none>        443/TCP    2d
+
+[buero@server complex]$ kubectl get deployments
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+client-deployment   3/3     3            3           15s
+
+[buero@server complex]$ kubectl get pods
+NAME                                 READY   STATUS    RESTARTS   AGE
+client-deployment-7cb6c958f7-5ndg6   1/1     Running   0          48s
+client-deployment-7cb6c958f7-666w6   1/1     Running   0          48s
+client-deployment-7cb6c958f7-9v2k7   1/1     Running   0          48s
+
+[buero@server complex]$ ls -la k8s/
+-rw-r--r-- 1 buero buero  184 10. Sep 14:02 client-cluster-ip-service.yaml
+-rw-r--r-- 1 buero buero  353 10. Sep 14:00 client-deployment.yaml
+-rw-r--r-- 1 buero buero  180 22. Okt 2020  server-cluster-ip-service.yaml
+-rw-r--r-- 1 buero buero  365 22. Okt 2020  server-deployment.yaml
+-rw-r--r-- 1 buero buero  307 22. Okt 2020  worker-deployment.yaml
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+A
+
